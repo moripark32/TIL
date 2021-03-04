@@ -1,0 +1,142 @@
+< Git 사용법 정리 >
+
+Command line interface: 줄로 쓰여진 명령어들 bash
+Graphic user interface: (눈으로)가시적인 인터페이스
+ 
+커밋이란: 워킹트리에서 프로젝트 디렉토리의 특정모습을 하나의 버전으로 남기는 행위 (screenshot)
+
+git을 바로 커밋하지않고 add하는 행위의 이유:
+워킹트리에서 커밋할것들만 추려서 선택적으로 파일을 커밋할수 있게 하기위해서.
+
+add하면 커밋 대기상태가 되어 staging area에 들어감 -> 
+git commit이라는 명령을 내리면 staging area에 대기하고 있는 모든 파일들을 버전에 포함시킴->
+커밋된 결과가 저장되는곳이 repository
+
+깃이란 repository history선상에서 깃발을 꼽고 현재로 갈수있고
+과거로 돌아가서 과거커밋으로도 돌릴 수있는 시스템
+
+
+< 초보자가 처음 git init할 때 주의할 점 >
+: 한폴더에 하나의 로컬저장소만 유지해야한다
+(바탕화면에 git init하고 나서 오픈소스를 받으면서 바탕화면에서
+작업하려할 때 충돌이 일어날수있음) (새폴더를 만들어서 각각 관리하기)
+
+< 깃허브에 코드를 올리는 첫 과정 >
+--내컴퓨터 프로젝트 폴더에 여기에 깃을 쓸거다라고 명령
+(Git init)
+--코딩하고 작업한 10개의 파일중 3개만 올리고 싶은 것을 선택
+(Git add)
+--선택한 파일들을 한 덩어리로 만들고 설명적어주기
+(Git commit -m “첫페이지 제작”)
+(여기서 덩어리로 만들어준다는 게 장점. 5가지파일을 수정했다면
+5가지 파일을 묶어서 하나의 커밋으로 보낼수있다)
+
+--깃허브 사이트에서 프로젝트 저장소를 만든다 클릭클릭
+--내컴퓨터 프로젝트 폴더에 깃허브저장소 주소를 알려주기
+( $ git remote add origin 원격-저장소-주소 )
+(여기서 위의 문장 해석하자면 origin은 
+--내컴에서 만든 덩어리 깃허브에 올리기
+(Git push origin main or master)
+
+<깃허브에 올라와있는 타인의 원격저장소를 내가 (clone)가져와 쓰고싶을 때>
+
+cloning 작업 -> 타인의 작업을 내 컴퓨터(로컬)로 클론하면서 .git이 자동으로 생김
+내가 클론한 작업물에 타인이 새로운 업데이트를 push한 경우, 옛날 버젼을 가지고있는 나는
+새로운 커밋을 받아오기 위해 pull이라는 행위를 해야 함. pull 명령어로 새로운 업뎃을 받아옴.
+만약 내가 클론한 타인의 작업에 뭔가를 더 바꾸고(change) 업데이트를 하고싶을 때(add)는 
+원격저장소에 대한 권한이 있어야만 가능 (push권한이 있어야함)( repository에 계정을 추가하면 권한주는것)
+
+
+< 명령어 >
+
+Ls -> 내가 현재 들어가있는 디렉토리에 있는 모든 파일 보여줌
+Ls -a -> 숨겨진 파일까지 보임
+Ls -al -> 권한까지 보임
+Cd 디렉토리이름 -> (순간이동) 들어가고싶은 디렉토리를 뒤에 쓰면됨
+Mkdir 디렉토리 이름 –> 디렉토리 새로 생성
+Touch 파일이름 –> 새로운 파일 생성
+Cat 이름 -> 찾아서 파일내용을 열어서 보여줌
+Vim 파일 작업 ( i 작업쓰기 / 끝내고 나서 shift(:) :w 뒤에 이름쓰고 enter 저장 :q는나가기 )
+Code ./ (vs code열려서 거기서 작업) 
+git diff 
+git log
+git log --oneline
+git log -p
+git log -p --oneline
+git push origin master / git pull origin master
+git add -> git commit -> git push origin master
+
+이미 푸시한 커밋(파일)을 지우는 방법:
+원격저장소가 아닌 로컬저장소에서 파일을 지운다음 그 상태를 업데이트 시켜주면됨. 
+로컬에서 삭제후 -> git status 확인하면 
+빨간 글씨로 deleted 파일들이 떠있음 -> 그상태를 git add – commit – push하면 삭제됨
+
+지금 어느 원격저장소랑 연결이 되있는 확인-> git remote -v (저장소를 보여줌)
+저장소에서 git을 지우고 새로운 git init을 하고싶을 때 -> git 을 제거하기 위해 쓰는
+rm rf .git (무조건 지우고싶은게 확실할 때 사용!!위험!!)
+
+git add해서 이미 staging area에 올라와있는 커밋을 undo하고싶을때 
+--> git reset HEAD (undo하고싶은 파일이름)
+working tree에서 changes to be commited가 아닌 untracked file로 뜨게될거임
+
+untracked file 삭제 하는 방법 : 아직 커밋되지않은 워킹트리에 있는 파일 지우려면 
+일단 삭제할 언트랙트 파일이 무엇이있는지 git clean -n으로 확인한다음
+git clean -f 하면됨
+만약 삭제하고 싶은게 디렉토리라면 git clean -fd
+ignored 깃 까지 포함해서 전부 지우고 싶을때는 git clean -fx
+
+mkdir로 만든 디렉토리를 반대로 삭제하고 싶을 때: rm -r 디렉토리 이름
+
+내가 변경시킨 것을 로컬에서도 이전 상태로 되돌리고 싶고 
+staging area 에서도 커밋이전 상태로 되돌리고 싶을 때: git restore 이름
+
+원격저장소와 로컬저장소의 상태가 동일하지 않을때 (원격레포에 변화가있었는데 그게 내 로컬에
+반영되지않았을 때 push가 되지 않음)-->(이럴 때 git pull origin master를 한다음 다시 푸쉬를
+하는게 좋지만 현재 로컬레포를 강제로 푸쉬하고싶을 땐 git push -f orgin master)
+
+이전커밋 상태로 (뒤로) 돌아가고싶을 때 (how to undo last git commit)-->
+git revert HEAD -m 1 (단계 뒤로)
+
+git branch –> 브랜치 확인
+git branch 이름 –> 브랜치 이름 짓고 추가 
+git checkout 이름/ git checkout master/ git checkout 이름 –> 브랜치간의 이동(평행우주)
+git checkout -b 이름 : 이름 브랜치를 만들면서 동시에 브랜치 안으로 이동하기.
+git checkout 아무개 -> 들어와있는 아무개 브랜치와 조랑말 브랜치 합치거 싶은 경우
+->git merge 조랑말 -> 들어가서 합치고싶은 브랜치이름을 넣은 명령어 씀
+git log –> commit한 기록을 보는 것 (생성한 커밋보기)
+git log –oneline -> 커밋기록을 깔끔하게 한줄로 요약해서 보여줌
+git merge 이름 -> 내가 있는 장소에 다른걸 가져와서 덮어씌우고 싶을 때
+(겹치는 부분은 conflict로 뜸 -> 내용 정리해주고 다시 add commit)
+Branch 작업이 다끝나고 나면 제거해야함
+(수명을 다한 브랜치는 헷갈리지 않게 제거 -> git branch -D 이름 /
+리모트브랜치 삭제 git push origin --delete 이름 )
+
+
+
+<다시정리할 내용>
+
+이해하고 더 추가
+
+git remote add (origin 말고 다른 개발용 리모트를 추가)
+
+<리모트서버로부터 업데이트 정보를 동기화>
+git fetch origin
+
+
+<how to push local branch to remote repository?>
+git push -u origin (브랜치 이름)
+
+여기서 -u의 설명을 덧붙이자면
+
+-u 는 upstream을 말한다. 
+
+upstream이 무엇인가? 브랜치 추적이다.
+-upstream을 이해하기 위해 origin이 무엇인지 보자.
+
+원격레포를 클론했을 때 git은 자동으로 origin이라는 이름을 붙인다.
+origin으로부터 데이터를 모두 내려받고 origin/master라고 부르는 포인터가 생긴다.
+로컬의 master브랜치는 마음대로 조종가능하지만 origin/master는 멋대로 조종할수없다.
+
+
+
+
