@@ -1,0 +1,23 @@
+
+< vs code 자주 쓰이는 단축키 정리 >
+	
+
+	Ctrl + home : 맨 위로 가기
+	Ctrl + end : 맨 아래로 가기
+	Ctrl + d : span 가 있다고 가정했을 때 컨트롤 디를 누르면서 span을 차례차례 골라서 선택해줌 (밑으로만 선택)
+	Ctrl + [ / ] : 줄 정리할 때 
+	Ctrl + p : 파일 이동 탐색
+	Ctrl + shift + p : 편집기 명령으로 바로 이동
+	Ctrl + shift + [ / ] : 줄이 길 때 접어서 보기 편하게 하기 ( header section 이런거 접을 때)
+	Ctrl + w : wrapping (내가 정한 단축키)
+	Ctrl + k + s : 키보드 shortcut 단축키
+	Ctrl + x : 라인 삭제하기
+	Ctrl + b : 사이드 바 열고 닫기 
+	Shift + alt + 위아래 : 행 복사
+	Alt + 위아래 : 행 이동
+	Alt + 클릭 : 원하는 부분 뒤에 추가해서 타입 할 때 필요한부분에 직접 클릭
+	Alt + shift + I : 커서로 다 색칠된 부분의 뒤에부터 코드를 더 타입해서 넣을 수 있음
+	Alt + shift + 커서움직이기 : 자유자재로 커서를 움직여서 색칠되는 부분을 맘대로 조절
+
+
+
