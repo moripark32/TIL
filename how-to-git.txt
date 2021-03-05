@@ -2,18 +2,27 @@
 
 Command line interface: 줄로 쓰여진 명령어들 bash
 Graphic user interface: (눈으로)가시적인 인터페이스
+
+세 공간이 존재. (working tree)----(staging area)----(commit history)
+워킹트리에서 작업을 하고 git add 도 안한 상태에서 git status 확인 해보면 untracked files로 뜸.
+물건을 사려면 장바구니에 담아야하니까 장바구니 담는게 git add. git add하고 나면 staging area에서 대기상태가됨.
+--> 깃스테이터스에서 changes to be committed : new file <새파일이름> 이렇게 뜸
+장바구니에 여러개 담고 나서 한꺼번에 묶어서 커밋을 올릴수잇음 다시말해 untracked files는 add 하지 않은 채로 
+몇개 워킹트리에 존재하더라도 쇼핑카트에 담기지 않았으니까 담겨있는 것들만 커밋해서 커밋히스토리에 올릴수있음. 
+커밋 히스토리에 있는 것들은 이제 상태 확인할때 git status가 아닌 git log로 볼수있음. 
  
-커밋이란: 워킹트리에서 프로젝트 디렉토리의 특정모습을 하나의 버전으로 남기는 행위 (screenshot)
+commit이란: 워킹트리에서 프로젝트 디렉토리의 특정모습을 하나의 버전으로 남기는 행위 (screenshot)
 
 git을 바로 커밋하지않고 add하는 행위의 이유:
 워킹트리에서 커밋할것들만 추려서 선택적으로 파일을 커밋할수 있게 하기위해서.
 
-add하면 커밋 대기상태가 되어 staging area에 들어감 -> 
-git commit이라는 명령을 내리면 staging area에 대기하고 있는 모든 파일들을 버전에 포함시킴->
+add해서 staging area에 들어간 것들에 git commit이라는 명령을 내리면 하나의 스크린샷으로 파일 다섯개가 하나로 묶여서 버전에 들어감-->
 커밋된 결과가 저장되는곳이 repository
 
 깃이란 repository history선상에서 깃발을 꼽고 현재로 갈수있고
 과거로 돌아가서 과거커밋으로도 돌릴 수있는 시스템
+
+git 에서 origin. head. master가 존재하는데 
 
 
 < 초보자가 처음 git init할 때 주의할 점 >
