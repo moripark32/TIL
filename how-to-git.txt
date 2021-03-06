@@ -175,6 +175,7 @@ git log -p --oneline
 git push origin master / git pull origin master
 git add -> git commit -> git push origin master
 git remote -v 원격확인
+git remote add origin (url) -> init 하고 원격레포 연결
 git branch –> 브랜치 확인
 git branch -a
 git branch 이름 –> 브랜치 이름 짓고 추가 
