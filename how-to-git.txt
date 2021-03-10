@@ -1,7 +1,7 @@
 < Git 사용법 정리 >
 
-Command line interface: 줄로 쓰여진 명령어들 bash
-Graphic user interface: (눈으로)가시적인 인터페이스
+Command line interface: 줄로 쓰여진 명령어들 bash.
+Graphic user interface: (눈으로)가시적인 인터페이스.
 
 세 공간이 존재. (working tree)----(staging area)----(commit history)
 워킹트리에서 작업을 하고 git add 도 안한 상태에서 git status 확인 해보면 untracked files로 뜸.
