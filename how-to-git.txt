@@ -1,0 +1,238 @@
+< Git 사용법 정리 >
+
+Command line interface: 줄로 쓰여진 명령어들 bash.
+Graphic user interface: (눈으로)가시적인 인터페이스.
+
+세 공간이 존재. (working tree)----(staging area)----(commit history)
+워킹트리에서 작업을 하고 git add 도 안한 상태에서 git status 확인 해보면 untracked files로 뜸.
+물건을 살때 장바구니에 담는것 처럼 장바구니 담는게 git add. git add하고 나면 staging area에서 대기상태가됨.
+--> 깃status에서 changes to be committed : new file <새파일이름> 이렇게 뜸
+장바구니에 여러개 담고 나서 한꺼번에 묶어서 커밋을 올릴수잇음 다시말해 untracked files는 add 하지 않은 채로 
+쇼핑카트에 담기지 않은 작업이 워킹트리에 존재하더라도 담겨있는 것들만 커밋해서 커밋히스토리에 올릴수있음. 
+커밋 히스토리에 있는 것들은 이제 상태 확인할때 git status가 아닌 git log로 볼수있음. 
+ 
+* commit이란 : 워킹트리에서 프로젝트 디렉토리의 특정모습을 하나의 버전으로 남기는 행위 (screenshot)
+
+git을 바로 커밋하지않고 add하는 행위의 이유:
+워킹트리에서 커밋할것들만 추려서 선택적으로 파일을 커밋할수 있게 하기위해서.
+
+add해서 staging area에 들어간 것들에 git commit이라는 명령을 내리면 하나의 스크린샷으로 파일 다섯개가 하나로 묶여서 버전에 들어감-->
+커밋된 결과가 저장되는곳이 repository
+
+* branch란?
+what is branch?
+branches result in a seperation of versions of the same file
+branch allows us to work on different versions of the same files in parallel.
+our edits on one branch can be independent of work on other branches.
+we can then decide to incorporate or merge our changes into other branches.
+we can have branches for different purposes for ex) a production branch and development branch
+and a branch to work on bug-fixes.
+
+
+[ 브랜치를 마스터 외에 두개(branch-A, branch-B)를 더만든다고 가정
+같은 작업인데 다르게 작업하려면 마스터에있는 오리지널 작업을 내버려두고 
+branch-A으로 checkout -> head points to 브랜치A. 브랜치A points to the commit. 여기서 작업하고 stage, commit.
+이제 git checkout branch-B를 하면 head는 브랜치B를 포인트. 여기서 또 완전다른 변화를 만들고 stage commit까지 하면
+branch-B는 결과물3이라는 커밋을 가르키고 branch-A는 결과물2 라는 커밋을 가르키고 master는 결과물1(원래모습)을 가르키고있음.
+따라서 content of the files will be different depending on which branch we checkout. ]
+
+
+* origin. head. master 영어 정의
+
+* HEAD 란 : the current commit your repo is on. Most of the time HEAD points 
+to the latest commit in your current branch, but that doesn't have to be the case. 
+HEAD really just means "what is my repo currently pointing at".
+
+In the event that the commit HEAD refers to 
+is not the tip of any branch, this is called a "detached head".
+
+* detached head란?
+
+When HEAD is detached, it points directly to a commit—instead of indirectly pointing to one 
+through a branch. You can think of a detached HEAD as being on an unnamed branch.
+
+[  head는 항상 브랜치를 향해 포인트하고있고 브랜치랑 함께 움직임.
+그리고 그 브랜치가 커밋을 포인트함. 원래 이런상태 --> ( 헤드 -> 브랜치 -> 커밋)
+근데 detached head상태란 헤드가 브랜치를 통해서 커밋을 포인트하지않고 직접적으로 커밋을 포인트하는것
+그러니까 이름없는 모르는 브랜치에 있는 채로 커밋을 바라보고 있는 상태.
+왠만하면 avoid checking out commits. move the branch head instead.
+하지만 실수로 detached head state에서 changes를 만든 경우 어떻게 저장하나?
+ 방법1) create a new branch from this commit and then do the commit or merge it to master
+-->git checkout -b <new branch name for detached head>
+-->git commit / -->git checkout master & git merge <new branch you just created> ]
+
+
+* master 란 : the name of the default branch that git creates for you when first creating a repo. 
+In most cases, "master" means "the main branch". Most shops have everyone pushing to master, 
+and master is considered the definitive view of the repo. But it's also common for release branches 
+to be made off of master for releasing. Your local repo has its own master branch, that almost always
+ follows the master of a remote repo.
+
+* origin 란 : the default name that git gives to your main remote repo. Your box has its own repo, and you most
+ likely push out to some remote repo that you and all your coworkers push to. That remote repo is almost always 
+called origin, but it doesn't have to be.
+
+* remote 란 : 내 컴퓨터로컬에서 타인의 로컬이 될수있고 깃허브 웹사이트가 될수있음. 같이 작업할땐 upstream이 복사뜬 오리지널리모트
+
+< 초보자가 처음 git init할 때 주의할 점 >
+: 한폴더에 하나의 로컬저장소만 유지해야한다
+(바탕화면에 git init하고 나서 오픈소스를 받으면서 바탕화면에서
+작업하려할 때 충돌이 일어날수있음) (새폴더를 만들어서 각각 관리하기)
+
+< 깃허브에 코드를 올리는 첫 과정 >
+--내컴퓨터 프로젝트 폴더에 여기에 깃을 쓸거다라고 명령
+(Git init)
+--코딩하고 작업한 10개의 파일중 3개만 올리고 싶은 것을 선택
+(Git add)
+--선택한 파일들을 한 덩어리로 만들고 설명적어주기
+(Git commit -m “첫페이지 제작”)
+(여기서 덩어리로 만들어준다는 게 장점. 5가지파일을 수정했다면
+5가지 파일을 묶어서 하나의 커밋으로 보낼수있다)
+
+--깃허브 사이트에서 프로젝트 저장소를 만든다 클릭클릭
+--내컴퓨터 프로젝트 폴더에 깃허브저장소 주소를 알려주기
+( $ git remote add origin 원격-저장소-주소 )
+(여기서 위의 문장 해석하자면 origin은 
+--내컴에서 만든 덩어리 깃허브에 올리기
+(Git push origin main or master)
+
+<깃허브에 올라와있는 타인의 원격저장소를 내가 (clone)가져와 쓰고싶을 때>
+
+cloning 작업 -> git clone (url)
+타인의 작업을 내 컴퓨터(로컬)로 클론하면서 .git이 자동으로 생김
+내가 클론한 작업물에 타인이 새로운 업데이트를 push한 경우, 옛날 버젼을 가지고있는 나는
+새로운 커밋을 받아오기 위해 pull이라는 행위를 해야 함. pull 명령어로 새로운 업뎃을 받아옴.
+만약 내가 클론한 타인의 작업에 뭔가를 더 바꾸고(change) 업데이트를 하고싶을 때(add)는 
+원격저장소에 대한 권한이 있어야만 가능 (push권한이 있어야함)( repository에 계정을 추가하면 권한주는것)
+
+<pull과 fetch 차이>
+fetch는 새로업데이트된 정보들을 받아오고나서 그다음 단계로 merge 따로 해줌  
+pull은 이를 동시에 한꺼번에 하는 행위. 따라서 pull 보단 fetch & merge가 안전.
+
+<fetch 연습상황: 베티가 자신의 원격레포에 웹상에서 파일을 만들고 그걸 로컬레포랑 싱크맞게하려면>
+
+리모트레포에서 마우스로 클릭해서 새거 만들고
+업데이트상황을 받아오기 위해 (git fetch origin)이라는 명령을 내림
+fetch로 정보를 받아오고 나서 (git log --graph)혹은(git remote show origin)라는 명령을쓰면 
+아직 merge이전에는 
+-->그래프 상에선(head->master )가 밑에꺼포인트 (origin/master, origin/head)가 위에거 포인트  
+다시말해 헤드마스터랑 오리진마스터가 따로놀고잇음 동일한곳을 포인트하고있지않음
+-->git remote show origin 명령에선 fetch이후 local ref 가 (local out of date 혹은 up to dated임을 확인할수있음)
+여기서 로컬을 merge해야함 (git merge origin/master)라는 명령을 내림.
+여기서 만약에 내가 다시 변화를 만들고 새파일을 더 원격에 추가할땐
+커밋하고나서 git log보면 오리진마스터보다 나의 헤드마스터 커밋이 맨위에 한칸 ahead올라가잇는걸 볼수잇음
+
+<밥과 베티의 공동작업>
+<전반적인 process : 밥이 베티작업을 가져와서 뭔작업을 더하고 베티작업에 반영하는 내용>
+
+같이 작업하는 밥이라는 인간이 생겨서 오리진 외에 리모트가 더 추가된다는 가정:
+
+밥은 베티레포에 대한 권한이 없으니 베티레포의 포크를 뜬다 (복사본을 뜬다)
+그 복사본은 이제 밥 소유의 레포(밥의 오리진레포)가 됨. 
+
+이제 밥의 로컬에서. 포크뜬 밥소유의 레포를 밥이 클론한다(베티레포 복사본)
+여기서 밥 로컬의 오리진이 포크를뜬 레포가 되는 것.
+포크뜬레포(오리진)랑 로컬이랑 베티의 레포 셋다 싱크가 맞아야하니까
+연결되어 있어야하기 때문에 (--> git remote add upstream 베티레포주소)명령 넣음
+( 밥 is adding a remote named upstream 이때 베티의 레포를 upstream이라고 부름 )
+
+만약 리모트 삭제하고싶을땐 git remote remove upstream(리모트이름)
+
+ 밥은 이제 베티레포에 반영할 작업을 브랜치 위에서 함.(깨끗이관리) 로컬에서 checkout a new branch. 새브랜치에서 변화를 주고 변화를 커밋. 
+ 그걸 오리진에 푸쉬(포크된레포) 그럼 오리진(포크레포)에 새로운 브랜치 반영됨. 밥의 포크레포에서 베티레포에 pull request를 보냄(issue).
+베티에게 변화를 베티레포에 반영하라는 request. 리퀘스트가 성공적으로 반영되고나면, 밥은 새브랜치를 삭제하면 끝!
+
+밥이 만든 브랜치를 오리진에 푸쉬하는 경우 github사이트상에서 처리하면됨 :
+원래 (origin/master)--(origin/head)--(head->지금가르키고있는브랜치)--(upstream/master)
+이렇게 거의 리모트가 존재하는데 밥이 만든 new-branch라는 브랜치를 푸쉬하는 경우 (-->git push origin 브랜치이름)
+(origin/new-branch)라는 remote-tracking branch가 생김. github사이트로 가보면 브랜치 고르는 곳에서
+new-branch를 들어가보면 new-branch로 보낸 커밋들이 ahead of betty-remote라고 뜸. 이걸 pull request버튼을 눌러서 보내면됨.
+
+베티가 작업을 더 추가했기때문에 그걸 받아오고나서 밥이 더 작업해야 하는 경우:
+git fetch upstream.(한번만하는게아니고 베티가 베티레포에 변화를 넣을때마다 fetch해야함)
+fetch해서 상태 확인해보면 upstream/master가  나의 head/master, origin/master, orgin/head보다
+위에 다른곳에 위치하고있음. (여기서 기억하고 넘어갈것은 오리진마스터가 가르키는건 밥의 포크레포임) 
+서로 다르니까 merge 해주고(git merge upstream/master) 그리고 나면 상태는(head/master와 upstream/master같은 곳)
+오리진마스터는 밑에 위치. 그러니까 밥의 포크레포도 업데이트시켜주게 git push origin master. 하면 다 싱크맞게끔 완성!!
+
+
+
+< 명령어 >
+
+Ls -> 내가 현재 들어가있는 디렉토리에 있는 모든 파일 보여줌
+Ls -a -> 숨겨진 파일까지 보임
+Ls -al -> 권한까지 보임
+Cd 디렉토리이름 -> (순간이동) 들어가고싶은 디렉토리를 뒤에 쓰면됨
+Mkdir 디렉토리 이름 –> 디렉토리 새로 생성
+Touch 파일이름 –> 새로운 파일 생성
+Cat 이름 -> 찾아서 파일내용을 열어서 보여줌
+Vim 파일 작업 ( i 작업쓰기 / 끝내고 나서 shift(:) :w 뒤에 이름쓰고 enter 저장 :q는나가기 )
+Code ./ (vs code열려서 거기서 작업) 
+git diff 
+git log
+git log --oneline
+git log -p
+git log -p --oneline
+git push origin master / git pull origin master
+git pull origin 브런치명 --allow-unrelated-histories  -> 이 명령 옵션은 이미 존재하는 두 프로젝트의 
+기록(history)을 저장하는 드문 상황에 사용된다. 즉, git에서는 서로 관련 기록이 없는 이질적인
+ 두 프로젝트를 병합할 때 기본적으로 거부하는데, 이것을 허용해 주는 것.
+git add -> git commit -> git push origin master
+git remote -v 원격확인
+git remote add origin (url) -> init 하고 원격레포 연결
+git branch –> 브랜치 확인
+git branch -a
+git branch 이름 –> 브랜치 이름 짓고 추가 
+git checkout 이름/ git checkout master/ git checkout 이름 –> 브랜치간의 이동(평행우주)
+git checkout -b 이름 : 이름 브랜치를 만들면서 동시에 브랜치 안으로 이동하기.
+git checkout 아무개 -> 들어와있는 아무개 브랜치와 조랑말 브랜치 합치거 싶은 경우
+->git merge 조랑말 -> 들어가서 합치고싶은 브랜치이름을 넣은 명령어 씀
+git merge 브랜치이름 -> 내가 있는 브랜치에 다른 브랜치를 합칠 때
+(겹치는 부분은 conflict로 뜸 -> 내용 정리해주고 다시 add commit)
+Branch 작업이 다끝나고 나면 제거해야함
+(수명을 다한 브랜치는 헷갈리지 않게 제거 -> git branch -D 이름 /
+리모트브랜치 삭제 git push origin --delete 브랜치이름 )
+
+
+
+이미 푸시한 커밋(파일)을 지우는 방법:
+원격저장소가 아닌 로컬저장소에서 파일을 지운다음 그 상태를 업데이트 시켜줌 
+로컬에서 삭제후 -> git status 확인하면 
+빨간 글씨로 deleted 파일들이 떠있음 -> 그상태를 git add – commit – push하면 삭제됨
+
+저장소에서 git을 지우고 새로운 git init을 하고싶을 때 -> 
+git 을 제거하기 위해 쓰는 rm rf .git (무조건 지우고싶은게 확실할 때 사용!!위험!!)
+
+로컬에 있는 파일 지울때 -> git rm 파일이름
+
+mkdir로 만든 디렉토리를 반대로 삭제하고 싶을 때: rm -r 디렉토리 이름
+
+git add해서 이미 staging area에 올라와있는 커밋을 undo하고싶을때 
+--> git reset HEAD (undo하고싶은 파일이름)
+working tree에서 changes to be commited가 아닌 untracked file로 뜨게될거임
+
+untracked file 삭제 하는 방법 : 아직 커밋되지않은 워킹트리에 있는 파일 지우려면 
+일단 삭제할 언트랙트 파일이 무엇이있는지 git clean -n으로 확인한다음
+git clean -f 하면됨
+만약 삭제하고 싶은게 디렉토리라면 git clean -fd
+ignored 깃 까지 포함해서 전부 지우고 싶을때는 git clean -fx
+
+staging area에서 변화가 생긴 커밋이 있고 그전 커밋이 존재.
+작업을 더 덮어씌운 상태에서 수정전이 나은거 같아서 다시 원래 옛날것으로 돌리고 싶을 때 /
+내가 변경시킨 것을 로컬에서도 이전 상태로 되돌리고 싶고 staging area 에서도 커밋이전 상태로 되돌리고 싶을 때:
+git restore 파일이름
+
+커밋 히스토리가 월 화 수 목 금 요일 이있는데 내 보스가 야 목금거 날리고
+그냥 수요일거로 완성본 결정하자!!이래서 수요일로 돌아가면서 목 금 작업은 다 삭제하는게 reset 명령임
+-->git reset 커밋고유번호 (수요일거) --hard
+
+이전커밋 상태로 (한단계 뒤로) 돌아가고싶을 때 (how to undo last git commit)-->
+git revert HEAD -m 1 (단계 뒤로)
+
+원격저장소와 로컬저장소의 상태가 동일하지 않을때 (원격레포에 변화가있었는데 그게 내 로컬에
+반영되지않았을 때 )-->(이럴 때 git pull origin master를 한 다음 다시 푸쉬를
+하는게 좋지만 현재 로컬레포를 강제로 푸쉬하고싶을 땐--> git push -f orgin master)
+
+
+
+
