@@ -1,0 +1,88 @@
+state 란 :
+
+React components has a built-in state object.
+
+The state object is where you store property values that belongs to the component.
+
+When the state object changes, the component re-renders.
+
+state의 두가지 종류 : 
+
+클래스형 컴포넌트가 지니고 있는 state
+함수형 컴포넌트에서 useState라는 함수를 통해 사용하는 state
+
+state는 자바스크립트 객체인데 컴포넌트의 렌더링 결과물에 영향을 주는 정보를 저장한 객체로서 동적인 데이터를 다룰 때 사용한다.
+
+state는 컴포넌트 안에서 관리되며, 컴포넌트는 state의 값이 바뀔 때 마다 화면을 다시 렌더링합니다. state의 값을 바꾸는 방법은 this.state로 생성자 안에서 state를 초기화 설정을 한 뒤 this.setState 함수에 새 state가 전달하여 state가 update되면 render()함수가 자동으로 실행되면서 업데이트 된 화면이 렌더링된다. this.state 와 setState로 동적인 데이터를 다룰수 있는 것이다.
+
+여기서 state = { } 를 써서 초기화 하는 것과
+constructor (props){
+super(props);
+여기에 this.state 써주는 것은 동일한 결과를 보여주기 때문에 큰 차이 없이 쓸수있지만
+}
+개인적으로 console.log를 찍어보기 좋은 constructor안에 this.state를 넣는 것은 선호한다.
+
+클래스형 컴포넌트가 호출되는 순서는 다음과 같다.
+constructor함수가 먼저 실행 --> render() 함수 실행 --> componentDidMount() 함수실행
+
+ComponentDidMount는 컴포넌트 출력물이 DOM에 렌더링 된 후에 실행된다 다시말해 컴포넌트가 처음 화면에 그려지면 실행되는 함수이다.
+componentDidUpdate는 화면이 업데이트 되는 시점에 함수가 실행되고
+이러한 생명주기 메소드를 통해 컴포넌트가 마운트되거나 언마운트될 때 일부 코드를 작동할수있다.
+
+state 업데이트는 비동기적일수있다.
+동기적/ 비동기적 이란?
+
+프로그래밍 언어에서 동기적(Synchronous) 비동기적(Asynchronous)의 차이점은 다음과 같다
+
+동기적(Synchronous)
+
+특정 코드를 수행 완료한 이후 아래줄의 코드 수행
+
+비동기적일 경우에 비해 속도가 느리다
+
+but 진행방향이 일방향이기 때문에 코드에서 에러가 나더라도 어디에서 에러가 났는지 쉽게 파악 가능
+
+비동기적(Asynchronous)
+
+특정 코드를 수행하는 도중에도 아래로 계속 내려가며 수행함
+
+속도가 빠르다는 장점 but 여러 군데에서 동시에 코드가 수행되기 때문에 진행방향 예상불가
+
+(다시 state로 돌아가서 )
+State 업데이트는 비동기적일 수도 있다. 즉 다시말해 코드를 한꺼번에 처리한다는 것.
+React는 성능을 위해 여러 setState() 호출을 단일 업데이트로 한꺼번에 처리할 수 있다.
+
+this.props와 this.state가 비동기적으로 업데이트될 수 있기 때문에 다음 state를 계산할 때 해당 값에 의존해서는 안 된다.
+
+예를 들어, 다음 코드는 카운터 업데이트에 실패할 수 있다.
+
+// Wrong
+this.setState({
+  counter: this.state.counter + this.props.increment,
+});
+이를 수정하기 위해 객체보다는 함수를 인자로 사용하는 다른 형태의 setState()를 사용한다. 그 함수는 이전 state를 첫 번째 인자로 받아들일 것이고, 업데이트가 적용된 시점의 props를 두 번째 인자로 받아들일 것.
+
+// Correct
+this.setState((state, props) => ({
+  counter: state.counter + props.increment
+}));
+또다른 예시로서 setState 안에서 bool : true 로 바꾸었다고 하더라도
+setState함수 { } 스코프 안에서 바로 bool에다가 무슨 작업을 할 수 없다.
+비동기 이기 때문에 시간이 걸리는 것은 뛰어넘고 다음 코드를 수행하기 위해 넘어가버려서
+state가 업데이트 된 상태가 아니기 때문이다.
+그래서 콜백함수로 다시 코드로 돌아와서 일을 하도록 만들어야한다.
+
+state={bool: false};
+--------------------
+setState ({
+bool:true
+console.log(bool) //true로 바뀌지 않은 원래 상태false가 나옴 
+})
+위코드에서 만약 setstate 스코프 안에 콜백함수를 사용하는 경우, setState 안에서 상태가 업데이트되어있는 bool을 사용할 수 있다.
+
+state={bool: false};
+--------------------
+setState ({
+bool:true
+() =>{ let foo = bool } //여기서 bool은 true
+})
