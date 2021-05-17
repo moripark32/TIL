@@ -1,0 +1,158 @@
+Basic syntax
+Before we delve into more advanced features of Axios, let’s compare its basic syntax to fetch(). 
+Here’s how you can use Axios to send a POST request with custom headers to a URL. 
+Axios automatically converts the data to JSON, so you don’t have to.
+
+axios가 post request를 헤더에 담아 보내는 방식이다. axios는 json으로 자동으로 바꾸기 때문에 내가 그런 작업을 해줄 필요가 없다
+
+// axios
+
+const options = {
+  url: 'http://localhost/test.htm',
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json;charset=UTF-8'
+  },
+  data: {
+    a: 10,
+    b: 20
+  }
+};
+
+axios(options)
+  .then(response => {
+    console.log(response.status);
+  });
+Now compare this code to the fetch() version, which produces the same result:
+
+fetch ( ) 를 비교해보자
+
+// fetch()
+
+const url = 'http://localhost/test.htm';
+const options = {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json;charset=UTF-8'
+  },
+  body: JSON.stringify({
+    a: 10,
+    b: 20
+  })
+};
+
+fetch(url, options)
+  .then(response => {
+    console.log(response.status);
+  });
+Notice that:
+
+주목할 점
+
+When using fetch(), you’d have to convert the data to json manually.
+axios와 달리 fetch함수에서는 데이터를 직접 json으로 변환시켜주어야함.
+
+Automatic transformation of data is a nice feature to have,
+but again, it’s not something you can’t do with fetch().
+To send data, fetch() uses the body property, while Axios uses the data property
+데이터를 보낼때 fetch는 바디 프로퍼티로 담아 보내고 axios는 데이터라는 프로퍼티에 담아보낸다
+
+// axios
+axios.get('https://api.github.com/orgs/axios')
+  .then(response => {
+    console.log(response.data);
+  }, error => {
+    console.log(error);
+  });
+
+// fetch()
+fetch('https://api.github.com/orgs/axios')
+  .then(response => response.json())    // one extra step
+  .then(data => {
+    console.log(data) 
+  })
+  .catch(error => console.error(error));
+The data in fetch() is stringified. The URL is passed as an argument to fetch().
+In Axios, however, the URL is set in the options object. In other words, 
+to get the json object response: in fetch call the json() function on the response object, 
+in Axios get data property of the response object.
+
+Fetch request function includes the url as parameter, Axios request function does not include the url as parameter.
+위를 보면 fetch는 stringified( res=>res.json() )되어 fetch의 인자로 전달되는 반면에 axios는 response의 객체 형태. 
+object의 key에 접근한다. ( res=> res.data)
+
+그외의 차이점
+
+Fetch has no url in request object, Axios has url in request object
+
+Fetch request is ok when response object contains the ok property, Axios request is ok when status is 200 and statusText is 'OK'
+
+Axios
+
+사용하기 더 편하다 (fetch도 물론 편하다)
+fetch에서 지원하지 않는 기능들을 지원해준다.
+Promise base
+Fetch
+
+import 하지않고 쓸 수 있다.
+React Native의 경우 업데이트가 잦아서, 라이브러리가 업데이트를 쫒아오지 못하는 경우가 생기는데, Fetch의 경우 이런 걱정 필요 없음.
+Promise base
+네트워크 에러가 발생했을 때, 기다려야 함.. > response timeout API 제공 x
+지원하지 않는 브라우저가 있음.
+axios의 장점
+
+One of the main selling points of Axios is its 1) wide browser support. 
+Even old browsers like IE11 can run Axios without any issue. 
+Fetch(), on the other hand, only supports Chrome 42+, Firefox 39+, Edge 14+, and Safari 10.1+
+
+2) The simplicity of setting timeout in Axios is one of the reasons some developers prefer axios to fetch(). 
+In Axios, you can use the optional timeout property in the config object to set the number of milliseconds before the request is aborted.
+
+axios({
+  method: 'post',
+  url: '/login',
+  timeout: 4000,    // 4 seconds timeout
+  data: {
+    firstName: 'David',
+    lastName: 'Pollock'
+  }
+})
+.then(response => {/* handle the response */})
+.catch(error => console.error('timeout exceeded'))
+One of the key features of Axios is 3) its ability to intercept HTTP requests. 
+(axios 인터셉터는 1.요청하기 직전, 2. 응답을 받고 then, catch로 처리 직전에 가로챌 수 있다)
+HTTP interceptors come in handy when you need to examine or 
+change HTTP requests from your application to the server or vice versa (e.g., logging, authentication, etc.).
+ With interceptors, you won’t have to write separate code for each HTTP request.
+
+Here’s how you can declare a request interceptor in Axios:
+
+axios.interceptors.request.use(config => {
+  // log a message before any HTTP request is sent
+  console.log('Request was sent');
+
+  return config;
+});
+
+// sent a GET request
+axios.get('https://api.github.com/users/sideshowbarker')
+  .then(response => {
+    console.log(response.data);
+  });
+Conclusion
+
+Axios provides a more comfortable to use API in comparison with fetch(). 
+The most significant disadvantage of using fetch() is the verbose workaround to set a timeout for your request. 
+It’s a much-needed functionality to prevent hanging requests.
+
+On the other hand, remember that Axios sets the default timeout to zero. 
+Therefore, don’t forget to set a timeout for each request. 
+Alternatively, you can use a request interceptor to automatically set the request timeout.
+
+Furthermore, for Node.js especifically, automatic JSON parsing is a useful feature to keep your code clean.
+ Again, you can use an interceptor for the Fetch API to parse a response object automatically to JSON.
+
+Yet, as seen in this guide, we have to overwrite the fetch() method to add custom logic. 
+I think it adds complexity to your code. For that reason, Axios is a clear winner to send HTTP requests based on its simplicity and ease-of-use.
