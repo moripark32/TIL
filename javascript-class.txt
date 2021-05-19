@@ -1,0 +1,51 @@
+클래스 란 :
+
+종합선물 세트와도 같은 것이다. 
+
+필요한 기능들을 전부 조합 해서 하나로 묶고난 후에
+하나씩 꺼내서 쓰고 싶을 때 언제든지 불러와서 편하게 사용한다.
+
+공통된 특징에 따라 분류해서 만든다. 
+예 ) 참치 세트경우 
+고추참치 일반참치 마요참치 등등
+
+클래스 형태 // 컴포넌트화 // 모듈형 // 나누고 분리해서 따로 사용할수있고 
+다른모양으로 재구성이 가능하고 조그만 기능단위로 나눌수록 재활용성이 높아짐
+
+작게 구분하는 단위가 클래스이고 이러한 클래스를 사용해서 코딩하는 것이 
+==> 객체지향형프로그래밍 ( 하나의 객체/묶음 을 지향한다)
+
+자바스크립트에서의 클래스 이해하기 :
+
+도장 찍는 붕어빵 틀이 클래스
+
+종이 에 찍혀져 나오는 도장자국/ 팥붕어빵 슈크림붕어빵들이 인스턴스 ( 인스턴스의 속성을 변경할수있음)
+
+클래스라는 개념과 함께 알아야 할것이 상속이라는 개념과 오버라이드 라는 개념. 
+
+상속 : 상품을 찍어내는 틀이 있는데 이 틀에 다가 원래있는것에서 뭘 조금 변경하거나 더해주거나 할 때, 예를 들면 소금만 종류별로 있는 클래스 / 소금만 있는 종합선물세트가 아닌 소금 종류들과 함께 후추도 팔고 싶을 때. 잼더하기 빵 이런 경우.
+
+클래스 확장이란 말그대로 기존 클래스에 무엇인가를 추가해서 새로운 클래스를 만드는 것.
+
+Class 소금과후추 extends 소금 이렇게 쓰고 클래스를 선언하면 아무런 내용을 쓰지 않아도 
+소금클래스안에 있는 변수와 메서드 프로퍼티 사용 가능 해짐  .
+
+Class is a blueprint for creating objects. A class encapsulates data and functions that 
+manipulate the data. Unlike other programming languages such as Java and C++, JavaScript classes are syntactic sugar over the prototypal inheritance.
+In other words, ES6 classes are just special functions.
+
+Classes are a template for creating objects. They encapsulate data with code to work on that data. 
+Classes in JS are built on prototypes but also have some syntax and semantics that are not shared with ES5 class-like semantics.
+
+Constructor 라는 것은 객체가 생성될때 그 객체의 초기상태를 지정하기 위한 객체가 만들어지기 직전에 실행되도록 약속된 함수이다. 
+
+Component Constructor
+If there is a constructor() function in your component, this function will be called when the component gets initiated.
+
+The constructor function is where you initiate the component's properties.
+
+In React, component properties should be kept in an object called state.
+
+The constructor function is also where you honor the inheritance of the parent component by including the super() statement, 
+which executes the parent component's constructor function, and your component has access to all the functions of the parent component 
+

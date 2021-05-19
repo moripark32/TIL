@@ -1,0 +1,35 @@
+< 배열이란 >
+
+값을 순차적으로 나열하여 인덱스값으로 접근할 수 있는 자료구조이다.배열을 다루기위한 수많은 메서드가 존재하는데 이를 자유자재로 다루면 자료구조를 잘 다룰 수있는 것을 의미하기에 유리하다.fact:1.배열은 사실 객체이다2.하지만 일반객체와는 다르게 순서가 자동으로 찍혀서나오는 index라는 것과length라는 프로퍼티를 가지고 있다.3.희소배열을 주의하자 (성능적으로 좋지않음)
+순서를 가진 배열이라는 시스템을 모방한 객체라서메모리가 연속적으로 이어있지 않을수있다. 이때 비워져있는 배열을 희소배열이라고 한다만약 farm라는 배열에 4가지 동물이 존재하고 토끼라는 동물을 [5]인덱스에 추가한 경우 [4]인덱스에는 undefined라는 값이 표시된다. length는 비어있는 요소까지 포함하여 0부터5를 count한 6이라는 length를 보여준다.희소배열의 length값이 요소의 개수와 일치하지 않는 것이다 하지만 [4]인덱스에는 있는 요소는 실질적으로 없는 요소라 이때 배열요소가 있는지 없는지 확인하는 메서드로서 hasOwnProperty를 사용한다
+
+비구조화 할당
+ecmascript 6에 새로 추가된 기능으로서 비구조화 할당은 배열,객체,반복 가능 객체에서 값을 꺼내어 그 값을 별도의 변수에 대입하는 문장이다.
+배열 의 비구조화 할당:var[a,b]=[1,2]는 var a=1, b=2와 같다.[a,b]=[2a,3b]는 a=2a, b=3b와 같다.이미 선언된 변수 a,b를 비구조화 할당한 것이다.
+객체 의 비구조화 할당:객체에서 프로퍼티 이름이 변수의 이름이 되어 변수 이름만 쉼표로 구분해서 작성할 수 있다.{a,b}={a:1, b:2}; 식은 {a:a,b:b}={a:1,b:2}와 같다
+
+< Arrays in JavaScript >
+
+In JavaScript, array is a single variable that is used to store different elements. It is often used when we want to store list of elements and access them by a single variable. Unlike most languages where array is a reference to the multiple variable, in JavaScript array is a single variable that stores multiple elements.
+
+Arrays are Objects
+Arrays are a special type of objects. The typeof operator in JavaScript returns "object" for arrays.
+But, JavaScript arrays are best described as arrays.
+Arrays use numbers to access its "elements".
+
+Array Elements Can Be Objects
+JavaScript variables can be objects. Arrays are special kinds of objects.
+Because of this, you can have variables of different types in the same Array.
+You can have objects in an Array. You can have functions in an Array. You can have arrays in an Array:
+myArray[0] = Date.now;
+myArray[1] = myFunction;
+myArray[2] = myCars;
+
+The Difference Between Arrays and Objects
+In JavaScript, arrays use numbered indexes.  
+In JavaScript, objects use named indexes.
+
+When to Use Arrays. When to use Objects.
+* JavaScript does not support associative arrays.
+* You should use objects when you want the element names to be strings (text).
+* You should use arrays when you want the element names to be numbers.
