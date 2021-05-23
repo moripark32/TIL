@@ -1,0 +1,42 @@
+rebase란?
+git rebase는 커밋의 base를 다시 정하는 작업
+“커밋의 베이스를 다시 정한다”
+
+rebase라는 작업은 왜 하는 것인가?
+불필요한 merge commit 생성시 모든 feature branch마다 “merge commit” 이 남는다.
+만약 main 브랜치를 공유하는 개발자가 많고, 프로젝트의 규모가 크다면, 복잡한 프로젝트 history로 인해
+branch history가 지저분해지기 쉽다.
+
+독립된 브랜치에서 로직 하나를 작성하고 수정하더라도, 다른 작업과 그 내역이 겹쳐 구분하기 어려워지므로 내 commit의 base를 변경하여, commit history를 일렬로 잘 정리해주는 작업을 해야한다.
+
+순서
+⓵master 에서 git pull origin master
+(마스터/메인 브랜치로 이동해서 remote를 pull받음)
+⓶feature 브랜치로 git checkout
+(내가 푸시할 feature branch로 이동)
+⓷feature 브랜치에서 git rebase -i master
+⓸가장 오래된 commit은 pick으로 두고 나머지 squash
+(맨 앞에 pick을 남겨두고 나머지를 s로 바꾼다 그리고 esc :wq로 빠져나옴)
+⓹수정용 에디터가 하나 더 등장!
+1. 최종적으로 이 rebase된 커밋의 내용을 작성하는 부분.
+2. 현재까지 적은 커밋 메세지가 전부 나타난다.
+3. 불필요한 내용을 제거하고 현재 수정 내역에 대한 커밋 메세지(전체 아우르는 메세지) 작성 esc.
+⓺충돌 발생 시 해결하고 git add .
+( git rebase --continue 리베이스 진행
+git rebase --abort 리베이스 중단 )
+⓻git push origin feature/login -f
+(수정 사항이 추가로 생긴 후 다시 rebase하면 history가 무조건 달라지기에 git은 history가 다른 branch의 push를 허용하지 않는다. 따라서 -f 옵션을 사용하여 force push를 진행)
+
+여기서 6번에서 생길 수 있는 충돌에 관하여 ...
+[ Rebase 중 충돌 해결하기 ]
+1. 충돌이 일어난 경우 Rebase가 진행되지도, 끝나지도 않고 도중에
+멈춰 있다.
+2. 터미널이 (rebase ~ 1/6) 과 같은 메세지로 rebase가 진행중임을
+알려주는 것.
+3. 해당하는 코드를 수정 후 Git add (수정사항이 없으니 Git commit은 하지 않는다)
+4. Git rebase ㅡㅡcontinue를 진행한다
+5. 멈춰 있던 리베이스가 진행된다.
+6. 충돌이 여러번 나면 그 때마다 충돌을 해결하고
+git add . / git rebase ㅡㅡcontinue를 반복한다.
+7. 계속 해결이 안된다면, git rebase ㅡㅡabort로 아예 rebase를
+진행하기 전 상황으로 돌아갈 수도 있다.
