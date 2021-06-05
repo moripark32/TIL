@@ -1,0 +1,55 @@
+useEffect
+componentDidMount 등 클래스 컴포넌트에 제공되었던 Life Cycle API는 useEffect로 사용할 수 있다.
+Life Cycle API에서 수행했던 API 요청, DOM 조작 등이 side effect이기 때문에, useEffect라는 이름의 API가 되었다.
+클래스 컴포넌트에서의 componentDidMount, componentDidUpdate, componentWillUnmount가 useEffect로 실행된다.
+function useEffect(effect: EffectCallback, inputs?: InputIdentityList)
+
+render가 발생할 때 마다(componentDidMount: 초기, componentDUpdate: 매번) effect가 실행된다. 
+두 번째 파라미터인 inputs를 통해 특정한 상태가 update 되었을 때만 effect가 실행되도록 설정할 수 있다.
+
+import { useState, useEffect } from 'react';
+
+export function Data() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    API.getData()
+      .then((response) => { setData(response) });
+  }, []);
+
+  const isLoading = (data == null);
+  if (isLoading) {
+    return 'Loading..';
+  }
+  return data;
+}
+
+위 예제는 useEffect의 inputs에 빈 배열을 넘겨서 최초(componentDidMount)에만 실행되도록 한다. 
+useEffect는 여러 개 사용할 수 있기 때문에 각 state마다 정의해 줄 수도 있고, 예제처럼 최초에 실행되는 것만 정의해주어도 된다.
+
+componentDidMount와 componentDidUpdate의 실행방법은 알겠는데, 그럼 componentWillUnmount는 어떻게 실행할까?
+
+useEffect(() => {
+  window.addEventListener("mousemove", logMousePosition);
+  return () => {
+    window.removeEventListener("mousemove", logMousePosition);
+  };
+}, []);
+effect 함수의 return 값이 있는 경우 hook의 cleanup 함수로 인식하고 다음 effect가 실행되기 전에 실행해준다. 
+componentWillUnmount는 컴포넌트가 사라지기 전에 한 번만 실행했지만, cleanup 함수는 새로운 effect 실행 전에 매번 호출된다는 차이가 있다.
+위 예제코드에서는 inputs로 빈 배열을 넘겨주었기 때문에 unmount 될 때 한 번만 실행된다.
+
+
+useEffect code blocks are clear indicators of asynchronous tasks. 
+ it is possible to write asynchronous code without useEffect, 
+ but it is not the “React way,” and it increases both complexity and 
+ the likelihood of introducing errors.
+ Instead of writing asynchronous code without useEffect that might block the UI, 
+ utilizing useEffect is a known pattern in the React community.
+ effects defined with useEffect are invoked after render.
+  To be more specific, it runs both after the first render and after every update. 
+  In contrast to lifecycle methods, effects don’t block the UI because they run asynchronously.
+  
+useEffect lets you synchronize things outside of the React tree according to our props and state.
+This is subtly different from the familiar mount/update/unmount mental model. 
+It is important really to internalize this.
