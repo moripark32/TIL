@@ -1,0 +1,63 @@
+Replacing Component Lifecycle Methods with React Hooks
+
+When writing React components, we sometimes need access to lifecycle events to handle a variety of side effects: 
+fetching data on mount, sanitizing props when the component updates, cleaning up before the component unmounts, etc.
+
+
+Until React 16.8, the most common solution for handling lifecycle events required ES6 class-based components. 
+In other words, if our code was already written using functional React components, then we first would have to 
+rewrite those components as classes that extend React.Component with a dedicated render function. Only then would it 
+be possible to access the three most common lifecycle methods: componentDidMount, componentDidUpdate, and componentWillUnmount.
+
+with React Hooks, it allows us to write functional React components and still be able to “hook” into all of the React.
+Component functionality, including lifecycle methods.
+
+For each of the three lifecycle methods, let’s take a look at what a class-based approach looks like and 
+how you can use Hooks to achieve the same result with a functional component.
+
+the useEffect Hook will be invoked when the component mounts.
+
+componentDidUpdate
+Before (class-based component):
+
+1 import React from "react";
+2
+3 class Component extends React.Component {
+4   componentDidUpdate() {
+5    console.log("Behavior when the component receives new state or props.");
+6   }
+7
+8  render() {
+9   return <h1>Hello World</h1>;
+10  }
+11 };
+import React from "react";
+ 
+
+After (functional component using Hooks):
+
+1 import React, { useEffect } from "react";
+2  
+3 const Component = () => {
+4   useEffect(() => {
+5     console.log("Behavior when the component receives new state or props.");
+6   });
+7  
+8   return <h1>Hello World</h1>;
+9 };
+
+This looks very similar to how we handled componentDidMount. 
+What is the difference? The most important thing to note is the optional second argument ([]) is no longer present.
+This means that the Hook will be evaluated on every re-render of the component. 
+The optional second argument represents an array of dependency values that will trigger 
+the re-evaluation of the useEffect Hook. If no values are provided in the array, it will only 
+evaluate the Hook on mount. If the array itself is not provided, it will be evaluated every re-render.
+
+with componentWillUnmount. The only difference between ComponentWillUnmount and componentDidMount is 
+the return statement inside of the useEffect function body. If a function is returned from useEffect, 
+that function is invoked only when the component is removed from the DOM.
+
+the Hooks lifecycle methods in a functional Hooks component allows you to decide how tightly or loosely coupled the lifecycle methods are.
+In the class-based approach, any setup that was done in componentDidMount would have to make values available to componentWillUnmount in order to clean up.
+Using Hooks, there is no need to do this since the mounting and unmounting logic is enclosed inside the same function scope. 
+Additionally, if there were a need to have separation between the mounting Hook and the unmounting Hook, you can opt to use two separate Hooks and handle the cases independently.
